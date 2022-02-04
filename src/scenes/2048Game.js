@@ -30,6 +30,8 @@ export default class Game2048 extends Phaser.Scene {
     // Background = 576 px x 1024 px
     // Tile = 128 px x 128 px
     this.load.image("bg", "../assets/Background.png");
+    this.load.image("reset-btn", "../assets/Bottom UI.png");
+
     this.load.image("tile2", "../assets/2 Tile.png");
     this.load.image("tile4", "../assets/4 Tile.png");
     this.load.image("tile8", "../assets/8 Tile.png");
@@ -45,26 +47,33 @@ export default class Game2048 extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, "bg").setScale(1.5);
+    var resetBtn = this.add
+      .sprite(this.gameHalfWidth, 100, "reset-btn")
+      .setInteractive();
+    resetBtn.on("pointerdown", function (pointer) {
+      location.reload();
+      console.log("reset");
+    });
 
-    // this.add.sprite(592, 496, 'tile2');
-    // this.add.sprite(592, 624, 'tile2');
-    // this.add.sprite(592, 752, 'tile2');
-    // this.add.sprite(592, 880, 'tile2');
+    this.add.sprite(592, 496, "tile2");
+    this.add.sprite(592, 624, "tile2");
+    this.add.sprite(592, 752, "tile2");
+    this.add.sprite(592, 880, "tile2");
 
-    // this.add.sprite(464, 496, 'tile2');
-    // this.add.sprite(464, 624, 'tile2');
-    // this.add.sprite(464, 752, 'tile2');
-    // this.add.sprite(464, 880, 'tile2');
+    this.add.sprite(464, 496, "tile2");
+    this.add.sprite(464, 624, "tile2");
+    this.add.sprite(464, 752, "tile2");
+    this.add.sprite(464, 880, "tile2");
 
-    // this.add.sprite(336, 496, 'tile2');
-    // this.add.sprite(336, 624, 'tile2');
-    // this.add.sprite(336, 752, 'tile2');
-    // this.add.sprite(336, 880, 'tile2');
+    this.add.sprite(336, 496, "tile2");
+    this.add.sprite(336, 624, "tile2");
+    this.add.sprite(336, 752, "tile2");
+    this.add.sprite(336, 880, "tile2");
 
-    // this.add.sprite(208, 496, 'tile2');
-    // this.add.sprite(208, 624, 'tile2');
-    // this.add.sprite(208, 752, 'tile2');
-    // this.add.sprite(208, 880, 'tile2');
+    this.add.sprite(208, 496, "tile2");
+    this.add.sprite(208, 624, "tile2");
+    this.add.sprite(208, 752, "tile2");
+    this.add.sprite(208, 880, "tile2");
 
     // this.tile2 = this.physics.add.sprite(
     //   this.gameHalfWidth,
@@ -73,11 +82,17 @@ export default class Game2048 extends Phaser.Scene {
     // );
 
     // this.tile4 = this.physics.add.sprite(
-    //     this.gameHalfWidth,
-    //     this.gameHalfHeight - 128,
-    //     "tile4"
-    //   );
-      
+    //   this.gameHalfWidth,
+    //   this.gameHalfHeight - 128,
+    //   "tile4"
+    // );
+
+    // this.tile2 = this.physics.add.sprite(
+    //   this.gameHalfWidth - 128,
+    //   this.gameHalfHeight,
+    //   "tile2"
+    // );
+
     // this.physics.add.overlap(
     //   this.tile2,
     //   this.tile4,
@@ -89,5 +104,9 @@ export default class Game2048 extends Phaser.Scene {
 
   test() {
     console.log("overlap");
+  }
+
+  spawnTile() {
+    
   }
 }
