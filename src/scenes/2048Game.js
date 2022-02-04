@@ -6,8 +6,8 @@ export default class Game2048 extends Phaser.Scene {
   }
 
   init() {
-    this.gameHalfWidth = this.scale.width * 0.5;
-    this.gameHalfHeight = this.scale.height * 0.5;
+    this.gameHalfWidth = this.scale.width * 0.5; // 400 px
+    this.gameHalfHeight = this.scale.height * 0.5; // 512 px
     this.tile2 = undefined;
     this.tile4 = undefined;
     this.tile8 = undefined;
@@ -19,6 +19,11 @@ export default class Game2048 extends Phaser.Scene {
     this.tile512 = undefined;
     this.tile1024 = undefined;
     this.tile2056 = undefined;
+    this.tilesPlacement = [];
+    /*
+      Jadi logikanya kita menggunakan multi dimensional array 
+      tilesPlacement[i][j] dengan nilai i adalah row dan nilai j adalah column
+    */
   }
 
   preload() {
@@ -61,24 +66,25 @@ export default class Game2048 extends Phaser.Scene {
     // this.add.sprite(208, 752, 'tile2');
     // this.add.sprite(208, 880, 'tile2');
 
-    this.tile2 = this.physics.add.sprite(
-      this.gameHalfWidth,
-      this.gameHalfHeight,
-      "tile2"
-    );
-    this.tile4= this.physics.add.sprite(
-        this.gameHalfWidth,
-        this.gameHalfHeight,
-        "tile4"
-      );
+    // this.tile2 = this.physics.add.sprite(
+    //   this.gameHalfWidth,
+    //   this.gameHalfHeight,
+    //   "tile2"
+    // );
 
-    this.physics.add.overlap(
-      this.tile2,
-      this.tile4,
-      this.test,
-      undefined,
-      this
-    );
+    // this.tile4 = this.physics.add.sprite(
+    //     this.gameHalfWidth,
+    //     this.gameHalfHeight - 128,
+    //     "tile4"
+    //   );
+      
+    // this.physics.add.overlap(
+    //   this.tile2,
+    //   this.tile4,
+    //   this.test,
+    //   undefined,
+    //   this
+    // );
   }
 
   test() {
