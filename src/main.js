@@ -4,8 +4,8 @@ import Game2048 from './scenes/2048Game'
 
 const config = {
 	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
+	width: 800, // 800
+	height: 1024, // 600
 	scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
@@ -13,7 +13,7 @@ const config = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			gravity: { y: 200 }
+			gravity: { y: 0 }
 		}
 	},
 	scene: [Game2048]
