@@ -127,54 +127,6 @@ export default class Game2048 extends Phaser.Scene {
     }
   }
 
-  // handleMove(tileX, tileY) {
-  //   //tileX = tileX, tileY = tileY
-  //   let i = 0;
-  //   let j = 0;
-  //   let isMoved = false;
-
-  //   if (tileX != 0) {
-  //     j = tileX > 0 ? (j = 3) : (j = 0);
-  //   } else {
-  //     i = tileY > 0 ? (i = 3) : (i = 0);
-  //   }
-
-  //   let tempJ = j;
-
-  //   for (; i < 4 && i >= 0; tileY > 0 ? i-- : i++) {
-  //     for (j = tempJ; j < 4 && j >= 0; tileX > 0 ? j-- : j++) {
-  //       console.log("(i,j)", i, j);
-  //       let tile = this.tilesPlacement[i][j];
-  //       if (tile.value > 0) {
-  //         let newX = i + tileY;
-  //         let newY = j + tileX;
-  //         console.log("former x and y ", newX, newY);
-
-  //         while (
-  //           this.isOnBoard(newX, newY) &&
-  //           (this.tilesPlacement[newX][newY].value == tile.value ||
-  //             this.tilesPlacement[newX][newY].value == 0)
-  //         ) {
-  //           let isEqualValue =
-  //             this.tilesPlacement[newX][newY].value == tile.value;
-  //           isMoved = true;
-  //           this.moveTile(tile, newX, newY, isEqualValue);
-  //           tile = this.tilesPlacement[newX][newY];
-  //           newX += tileY;
-  //           newY += tileX;
-  //           console.log("while inside");
-  //           console.log("new x and y ", newX, newY);
-  //           console.log();
-  //         }
-  //       }
-  //     }
-
-  //     if (isMoved) {
-  //       this.spawnTile();
-  //     }
-  //   }
-  // }
-
   handleMove(tileX, tileY) {
     let i = 0;
     let j = 0;
@@ -197,7 +149,7 @@ export default class Game2048 extends Phaser.Scene {
           let newY = j + tileX;
           // console.log("new x y", newX, newY);
           while (
-            this.isOnBoard(newX, newY) &&
+            this.onBoard(newX, newY) &&
             (this.tilesPlacement[newX][newY].value == tiles.value ||
               this.tilesPlacement[newX][newY].value == 0)
           ) {
@@ -254,7 +206,7 @@ export default class Game2048 extends Phaser.Scene {
     });
   }
 
-  isOnBoard(x, y) {
+  onBoard(x, y) {
     let checkX = x >= 0 && x < 4 ? true : false;
     let checkY = y >= 0 && y < 4 ? true : false;
 
