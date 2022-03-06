@@ -5,23 +5,11 @@ export default class Game2048 extends Phaser.Scene {
     super("2048-main-scene");
   }
 
-  //tiles = tile
-  //tilesGroup = tileGroup
-  //tilesPlacement = tilesPlacement
   init() {
     this.gameHalfWidth = this.scale.width * 0.5; // 400 px
     this.gameHalfHeight = this.scale.height * 0.5; // 512 px
-    this.tile2 = undefined;
-    this.tile4 = undefined;
-    this.tile8 = undefined;
-    this.tile16 = undefined;
-    this.tile32 = undefined;
-    this.tile64 = undefined;
-    this.tile128 = undefined;
-    this.tile256 = undefined;
-    this.tile512 = undefined;
-    this.tile1024 = undefined;
-    this.tile2056 = undefined;
+    this.spriteCount = 0;
+    this.afterCount = 0;
     this.tilesPlacement = [];
   }
 
@@ -30,6 +18,7 @@ export default class Game2048 extends Phaser.Scene {
     // Tile = 128 px x 128 px
     this.load.image("bg", "../assets/Background.png");
     this.load.image("reset-btn", "../assets/Bottom UI.png");
+    this.load.image("gameoverText", "../assets/GameOver.png");
 
     this.load.image("tile2", "../assets/2 Tile.png");
     this.load.image("tile4", "../assets/4 Tile.png");
@@ -103,24 +92,20 @@ export default class Game2048 extends Phaser.Scene {
   handleKey(event) {
     switch (event.key) {
       case "w":
-        // console.log("w is Pressed");
-        // console.log(this.tilesPlacement)
         this.handleMove(0, -1);
+        this.checkGameOver();
         break;
       case "a":
-        // console.log("a is pressed");
-        // console.log(this.tilesPlacement)
         this.handleMove(-1, 0);
+        this.checkGameOver();
         break;
       case "s":
-        // console.log("s is pressed");
-        // console.log(this.tilesPlacement)
         this.handleMove(0, 1);
+        this.checkGameOver();
         break;
       case "d":
-        // console.log("d is pressed");
-        // console.log(this.tilesPlacement)
         this.handleMove(1, 0);
+        this.checkGameOver();
         break;
       default:
         break;
@@ -142,12 +127,10 @@ export default class Game2048 extends Phaser.Scene {
 
     for (; i < 4 && i >= 0; tileY > 0 ? i-- : i++) {
       for (j = tempj; j < 4 && j >= 0; tileX > 0 ? j-- : j++) {
-        // console.log("(i,j)", i, j);
         let tiles = this.tilesPlacement[i][j];
         if (tiles.value > 0) {
           let newX = i + tileY;
           let newY = j + tileX;
-          // console.log("new x y", newX, newY);
           while (
             this.onBoard(newX, newY) &&
             (this.tilesPlacement[newX][newY].value == tiles.value ||
@@ -156,12 +139,10 @@ export default class Game2048 extends Phaser.Scene {
             let isEqualValue =
               this.tilesPlacement[newX][newY].value == tiles.value;
             isMoved = true;
-            this.moveTile(tiles,newX,newY,isEqualValue);
+            this.moveTile(tiles, newX, newY, isEqualValue);
             tiles = this.tilesPlacement[newX][newY];
             newX += tileY;
             newY += tileX;
-            // console.log("new x and y ", newX, newY);
-            console.log();
           }
         }
       }
@@ -184,6 +165,8 @@ export default class Game2048 extends Phaser.Scene {
       newTile.tileSprite.setVisible(true);
       newTile.value = value;
       newTile.tileSkin.setTexture(`tile${value}`);
+
+      // this.spriteCount--;
     } else {
       newTile.tileSprite.setVisible(true);
       newTile.value = tile.value;
@@ -211,5 +194,63 @@ export default class Game2048 extends Phaser.Scene {
     let checkY = y >= 0 && y < 4 ? true : false;
 
     return checkX && checkY;
+  }
+
+  /* 
+    Disini gameover akan terjadi jika tidak ada tempat yang kosong dan
+    tidak ada blok yang bisa disatukan
+  */
+  // checkGameOver() {
+  //   for (let i = 0; i < 4; i++) {
+  //     for (let j = 0; j < 4; j++) {
+  //       if (this.tilesPlacement[i][j].value == 0) {
+  //         return;
+  //       } else if (
+  //         // Error berada pada statement this.tilesPlacement[i + 1][j].value is undefined
+  //         // ini berfungsi untuk compare sprite diatasnya apakah valuenya sama atau tidak 
+  //         this.tilesPlacement[i][j].value == this.tilesPlacement[i + 1][j].value
+  //       ) {
+  //         return;
+  //       } else if (
+  //         // Error berada pada statement this.tilesPlacement[i][j + 1].value is undefined
+  //         // ini berfungsi untuk compare sprite disampingnya apakah valuenya sama atau tidak 
+  //         this.tilesPlacement[i][j].value == this.tilesPlacement[i][j + 1].value
+  //       ) {
+  //         return;
+  //       }
+  //     }
+  //   }
+  //   this.add.image(400, 512, "gameoverText").setScale(0.5);
+  // }
+
+
+  /* 
+    Disini Game Over akan terjadi saat player 4x bergerak dan
+    tidak ada tempat untuk spawn sprite, kelemahannya disini jika player 
+    bermain dengan cepat maka sistemnya akan pasti tidak berfungsi dengan tepat
+    dan jika player pernah memenuhi kondisi sebelumnya (4x bergerak dan tidak 
+    ada spawn) maka sistemnya juga tidak berfungsi dengan tepat
+  */
+  checkGameOver() {
+    this.spriteCount = 0;
+
+    if (this.spriteCount < 16) {
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+          if (this.tilesPlacement[i][j].value >= 2) {
+            this.spriteCount++;
+          }
+        }
+      }
+      if (this.spriteCount >= 16) {
+        this.afterCount++;
+      }
+    }
+
+    if (this.afterCount >= 4){
+      this.add.image(400, 512, "gameoverText").setScale(0.5)
+    };
+
+    console.log(this.spriteCount, this.afterCount);
   }
 }
