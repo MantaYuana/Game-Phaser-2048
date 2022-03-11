@@ -125,7 +125,7 @@ export default class Game2048 extends Phaser.Scene {
 
     let tempj = j;
 
-    for (; i < 4 && i >= 0; tileY > 0 ? i-- : i++) {
+    for (i = 0; i < 4 && i >= 0; tileY > 0 ? i-- : i++) {
       for (j = tempj; j < 4 && j >= 0; tileX > 0 ? j-- : j++) {
         let tiles = this.tilesPlacement[i][j];
         if (tiles.value > 0) {
@@ -200,29 +200,20 @@ export default class Game2048 extends Phaser.Scene {
     Disini gameover akan terjadi jika tidak ada tempat yang kosong dan
     tidak ada blok yang bisa disatukan
   */
-  // checkGameOver() {
-  //   for (let i = 0; i < 4; i++) {
-  //     for (let j = 0; j < 4; j++) {
-  //       if (this.tilesPlacement[i][j].value == 0) {
-  //         return;
-  //       } else if (
-  //         // Error berada pada statement this.tilesPlacement[i + 1][j].value is undefined
-  //         // ini berfungsi untuk compare sprite diatasnya apakah valuenya sama atau tidak 
-  //         this.tilesPlacement[i][j].value == this.tilesPlacement[i + 1][j].value
-  //       ) {
-  //         return;
-  //       } else if (
-  //         // Error berada pada statement this.tilesPlacement[i][j + 1].value is undefined
-  //         // ini berfungsi untuk compare sprite disampingnya apakah valuenya sama atau tidak 
-  //         this.tilesPlacement[i][j].value == this.tilesPlacement[i][j + 1].value
-  //       ) {
-  //         return;
-  //       }
-  //     }
-  //   }
-  //   this.add.image(400, 512, "gameoverText").setScale(0.5);
-  // }
-
+  checkGameOver() {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (this.tilesPlacement[i][j].value == 0) {
+          return;
+        } else if (i > 3 && this.tilesPlacement[i][j].value == this.tilesPlacement[i + 1][j].value) {
+          return;
+        } else if (j > 3 && this.tilesPlacement[i][j].value == this.tilesPlacement[i][j + 1].value) {
+          return;
+        }
+      }
+    }
+    this.add.image(400, 512, "gameoverText").setScale(0.5);
+  }
 
   /* 
     Disini Game Over akan terjadi saat player 4x bergerak dan
@@ -231,26 +222,26 @@ export default class Game2048 extends Phaser.Scene {
     dan jika player pernah memenuhi kondisi sebelumnya (4x bergerak dan tidak 
     ada spawn) maka sistemnya juga tidak berfungsi dengan tepat
   */
-  checkGameOver() {
-    this.spriteCount = 0;
+  // checkGameOver() {
+  //   this.spriteCount = 0;
 
-    if (this.spriteCount < 16) {
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 4; j++) {
-          if (this.tilesPlacement[i][j].value >= 2) {
-            this.spriteCount++;
-          }
-        }
-      }
-      if (this.spriteCount >= 16) {
-        this.afterCount++;
-      }
-    }
+  //   if (this.spriteCount < 16) {
+  //     for (let i = 0; i < 4; i++) {
+  //       for (let j = 0; j < 4; j++) {
+  //         if (this.tilesPlacement[i][j].value >= 2) {
+  //           this.spriteCount++;
+  //         }
+  //       }
+  //     }
+  //     if (this.spriteCount >= 16) {
+  //       this.afterCount++;
+  //     }
+  //   }
 
-    if (this.afterCount >= 4){
-      this.add.image(400, 512, "gameoverText").setScale(0.5)
-    };
+  //   if (this.afterCount >= 4){
+  //     this.add.image(400, 512, "gameoverText").setScale(0.5)
+  //   };
 
-    console.log(this.spriteCount, this.afterCount);
-  }
+  //   console.log(this.spriteCount, this.afterCount);
+  // }
 }
